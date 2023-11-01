@@ -17,6 +17,8 @@ class PhoneViewController: UIViewController {
     let disposeBag = DisposeBag()
     //기본값 설정
     let phone = BehaviorSubject(value: "010")
+    let buttonColor = BehaviorSubject(value: UIColor.red)
+    let buttonEnabled = BehaviorSubject(value: false)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,10 +37,26 @@ class PhoneViewController: UIViewController {
             .bind(to: phoneTextField.rx.text)
             .disposed(by: disposeBag)
         
+        buttonEnabled
+            .bind(to: nextButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+        
+        buttonColor
+            .bind(to: nextButton.rx.backgroundColor, phoneTextField.rx.tintColor)
+            .disposed(by: disposeBag)
+        
         phoneTextField.rx.text.orEmpty
             .subscribe { value in
                 let result = value.formatted(by: "###-####-####")
                 self.phone.onNext(result)
+            }
+            .disposed(by: disposeBag)
+        
+        phone.map { $0.count > 12 }
+            .subscribe(with: self) { owner, value in
+                let color = value ? UIColor.blue : UIColor.red
+                owner.buttonColor.onNext(color)
+                owner.buttonEnabled.onNext(value)
             }
             .disposed(by: disposeBag)
         
