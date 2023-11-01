@@ -72,6 +72,7 @@ class BirthdayViewController: UIViewController {
     let year = BehaviorSubject(value: 2020)
     let month = BehaviorSubject(value: 12)
     let day = BehaviorSubject(value: 21)
+    let buttonEnabled = BehaviorSubject(value: false)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,18 +87,51 @@ class BirthdayViewController: UIViewController {
     
     func bind() {
         
+        
+        
         birthDayPicker.rx.date
             .bind(to: birthday)
             .disposed(by: disposeBag)
         
+        buttonEnabled
+            .bind(to: nextButton.rx.isEnabled)
+            .disposed(by: disposeBag)
+
+        
+//        6,205
+          
         birthday
             .subscribe(with: self) { owner, date in
                 let component = Calendar.current.dateComponents([.year, .month, .day], from: date)
+          
                 owner.year.onNext(component.year!)
                 owner.month.onNext(component.month!)
                 owner.day.onNext(component.day!)
+        
+                print(component.year!, component.month!, component.day!)
+                
+            
             }
             .disposed(by: disposeBag)
+    
+        birthday.map { date in
+            let component = Calendar.current.dateComponents([.year, .month, .day], from: date)
+            if self.yearFormatter(from: date) > 17 {
+                return true
+            } else if self.yearFormatter(from: date) == 17 && self.monthFormatter(from: date) == component.month! && self.dayFormatter(from: date) >= component.day! {
+                return true
+            } else if self.yearFormatter(from: date) == 17 && self.monthFormatter(from: date) >= component.month! {
+                return true
+            } else {
+                return false
+            }
+        }
+        .subscribe(with: self) { owner, value in
+            let isEnable = value ? true : false
+            self.buttonEnabled.onNext(isEnable)
+        }
+        .disposed(by: disposeBag)
+        
         
         year.map { "\($0)년" }
             .subscribe(with: self) { owner, value in
@@ -121,8 +155,17 @@ class BirthdayViewController: UIViewController {
     @objc func nextButtonClicked() {
         print("가입완료")
     }
-
     
+    func yearFormatter(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.year], from: date, to: Date()).year!
+    }
+    func monthFormatter(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.month], from: date, to: Date()).month!
+    }
+    func dayFormatter(from date: Date) -> Int {
+        return Calendar.current.dateComponents([.day], from: date, to: Date()).day!
+    }
+ 
     func configureLayout() {
         view.addSubview(infoLabel)
         view.addSubview(containerStackView)
