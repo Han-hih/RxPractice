@@ -120,7 +120,7 @@ class BirthdayViewController: UIViewController {
                 return true
             } else if self.yearFormatter(from: date) == 17 && self.monthFormatter(from: date) == component.month! && self.dayFormatter(from: date) >= component.day! {
                 return true
-            } else if self.yearFormatter(from: date) == 17 && self.monthFormatter(from: date) >= component.month! {
+            } else if self.yearFormatter(from: date) == 17 && self.monthFormatter(from: date) > component.month! {
                 return true
             } else {
                 return false
