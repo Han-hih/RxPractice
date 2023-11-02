@@ -29,6 +29,7 @@
 		041280732AEFAD4B00972552 /* NicknameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041280722AEFAD4B00972552 /* NicknameViewController.swift */; };
 		041280782AF1D14000972552 /* Resource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 041280772AF1D14000972552 /* Resource.swift */; };
 		80088E672AF3F51700BC6799 /* PhoneViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80088E662AF3F51700BC6799 /* PhoneViewModel.swift */; };
+		80088E692AF4008300BC6799 /* NicknameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80088E682AF4008300BC6799 /* NicknameViewModel.swift */; };
 		800C11C12AF397D5001849A0 /* BirthdayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 800C11C02AF397D4001849A0 /* BirthdayViewModel.swift */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		041280722AEFAD4B00972552 /* NicknameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameViewController.swift; sourceTree = "<group>"; };
 		041280772AF1D14000972552 /* Resource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Resource.swift; sourceTree = "<group>"; };
 		80088E662AF3F51700BC6799 /* PhoneViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneViewModel.swift; sourceTree = "<group>"; };
+		80088E682AF4008300BC6799 /* NicknameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NicknameViewModel.swift; sourceTree = "<group>"; };
 		800C11C02AF397D4001849A0 /* BirthdayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -194,6 +196,7 @@
 				041280702AEFAD3D00972552 /* PhoneViewController.swift */,
 				80088E662AF3F51700BC6799 /* PhoneViewModel.swift */,
 				041280722AEFAD4B00972552 /* NicknameViewController.swift */,
+				80088E682AF4008300BC6799 /* NicknameViewModel.swift */,
 			);
 			path = SignUpOptional;
 			sourceTree = "<group>";
@@ -341,6 +344,7 @@
 				0412806F2AEFAD2D00972552 /* BirthdayViewController.swift in Sources */,
 				041280652AEFA2F000972552 /* SignTextField.swift in Sources */,
 				0412806C2AEFABFE00972552 /* PasswordViewController.swift in Sources */,
+				80088E692AF4008300BC6799 /* NicknameViewModel.swift in Sources */,
 				041280562AEFA04800972552 /* SignInViewController.swift in Sources */,
 				800C11C12AF397D5001849A0 /* BirthdayViewModel.swift in Sources */,
 				041280282AEF9BAB00972552 /* ViewController.swift in Sources */,
