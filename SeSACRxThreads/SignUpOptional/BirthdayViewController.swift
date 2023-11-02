@@ -89,37 +89,14 @@ class BirthdayViewController: UIViewController {
             .bind(to: nextButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
-        viewModel.birthday
-            .subscribe(with: self) { owner, date in
-                let component = Calendar.current.dateComponents([.year, .month, .day], from: date)
-                
-                owner.viewModel.year.onNext(component.year!)
-                owner.viewModel.month.onNext(component.month!)
-                owner.viewModel.day.onNext(component.day!)
-                
-                print(component.year!, component.month!, component.day!)
-            }
-            .disposed(by: disposeBag)
-        
         viewModel.birthday.map { date in
-            let component = Calendar.current.dateComponents([.year, .month, .day], from: date)
-            if self.viewModel.yearFormatter(from: date) > 17 {
-                return true
-            } else if self.viewModel.yearFormatter(from: date) == 17 && self.viewModel.monthFormatter(from: date) == component.month! && self.viewModel.dayFormatter(from: date) >= component.day! {
-                return true
-            } else if self.viewModel.yearFormatter(from: date) == 17 && self.viewModel.monthFormatter(from: date) > component.month! {
-                return true
-            } else {
-                return false
-            }
+            self.viewModel.ageCalculate(date: date)
         }
         .subscribe(with: self) { owner, value in
-            let isEnable = value ? true : false
-            self.viewModel.buttonEnabled.onNext(isEnable)
+            owner.viewModel.buttonEnabled.onNext(value)
         }
         .disposed(by: disposeBag)
-        
-        
+
         viewModel.year.map { "\($0)년" }
             .subscribe(with: self) { owner, value in
                 owner.yearLabel.text = value
