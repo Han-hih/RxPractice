@@ -16,9 +16,7 @@ class PhoneViewController: UIViewController {
     let nextButton = PointButton(title: "다음")
     let disposeBag = DisposeBag()
     //기본값 설정
-    let phone = BehaviorSubject(value: "010")
-    let buttonColor = BehaviorSubject(value: UIColor.red)
-    let buttonEnabled = BehaviorSubject(value: false)
+    let viewModel = PhoneViewModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,30 +31,30 @@ class PhoneViewController: UIViewController {
     
     func bind() {
         
-        phone
+        viewModel.phone
             .bind(to: phoneTextField.rx.text)
             .disposed(by: disposeBag)
         
-        buttonEnabled
+            viewModel.buttonEnabled
             .bind(to: nextButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
-        buttonColor
+            viewModel.buttonColor
             .bind(to: nextButton.rx.backgroundColor, phoneTextField.rx.tintColor)
             .disposed(by: disposeBag)
         
         phoneTextField.rx.text.orEmpty
             .subscribe { value in
                 let result = value.formatted(by: "###-####-####")
-                self.phone.onNext(result)
+                self.viewModel.phone.onNext(result)
             }
             .disposed(by: disposeBag)
         
-        phone.map { $0.count > 12 }
+            viewModel.phone.map { $0.count > 12 }
             .subscribe(with: self) { owner, value in
-                let color = value ? UIColor.blue : UIColor.red
-                owner.buttonColor.onNext(color)
-                owner.buttonEnabled.onNext(value)
+                let color = value ? Color.blue : Color.red
+                owner.viewModel.buttonColor.onNext(color)
+                owner.viewModel.buttonEnabled.onNext(value)
             }
             .disposed(by: disposeBag)
         
@@ -86,42 +84,3 @@ class PhoneViewController: UIViewController {
 
 }
 
-extension String {
-    var decimalFilteredString: String {
-        return String(unicodeScalars.filter(CharacterSet.decimalDigits.contains))
-    }
-    
-    func formatted(by patternString: String) -> String {
-        let digit: Character = "#"
-        
-        let pattern: [Character] = Array(patternString)
-        let input: [Character] = Array(self.decimalFilteredString)
-        var formatted: [Character] = []
-        
-        var patternIndex = 0
-        var inputIndex = 0
-        
-        // 2
-        while inputIndex < input.count {
-            let inputCharacter = input[inputIndex]
-            
-            // 2-1
-            guard patternIndex < pattern.count else { break }
-            
-            switch pattern[patternIndex] == digit {
-            case true:
-                // 2-2
-                formatted.append(inputCharacter)
-                inputIndex += 1
-            case false:
-                // 2-3
-                formatted.append(pattern[patternIndex])
-            }
-            
-            patternIndex += 1
-        }
-        
-        // 3
-        return String(formatted)
-    }
-}
